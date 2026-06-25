@@ -13,7 +13,6 @@
 #     value: "nbt_xxx.yyy"
 
 plugin: netbox.netbox.nb_inventory
-api_endpoint: http://localhost:8000
 validate_certs: false
 config_context: false
 
