@@ -1,0 +1,20 @@
+---
+# Proves the NetBox dynamic inventory works.
+# The "devices" here are not real reachable hosts, so we use connection: local
+# and just print the data Ansible pulled from NetBox. No SSH happens.
+#
+# Run with:
+#   ansible-playbook -i netbox_inv.yml playbook.yml
+
+- name: Show devices pulled from NetBox
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Print each device and its NetBox attributes
+      ansible.builtin.debug:
+        msg: >-
+          {{ inventory_hostname }}
+          | roles={{ device_roles | default('?') }}
+          | sites={{ sites | default('?') }}
+          | ip={{ ansible_host | default('none') }}

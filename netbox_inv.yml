@@ -1,0 +1,27 @@
+# NetBox dynamic inventory config.
+# The plugin reads NETBOX_API and NETBOX_TOKEN from the environment, so you do not
+# have to hardcode the token here. (api_endpoint is set explicitly below for clarity.)
+#
+# IMPORTANT: this file must be passed with -i, e.g.:
+#   ansible-inventory -i netbox_inv.yml --graph
+#
+# The token used here is read from NETBOX_TOKEN. Easiest path for the prototype:
+# use a v1 (legacy) token, which works with the default "Token" auth scheme.
+# If you use a v2 token, replace the env-based auth with the typed form:
+#   token:
+#     type: Bearer
+#     value: "nbt_xxx.yyy"
+
+plugin: netbox.netbox.nb_inventory
+api_endpoint: http://localhost:8000
+validate_certs: false
+config_context: false
+
+# Build Ansible groups from these NetBox attributes.
+group_by:
+  - device_roles
+  - sites
+
+# Map NetBox data onto Ansible host variables.
+compose:
+  ansible_host: primary_ip4

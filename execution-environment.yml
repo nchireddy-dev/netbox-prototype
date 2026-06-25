@@ -1,0 +1,30 @@
+# Ansible Builder v3 definition. Builds a container image (an "execution
+# environment") that AWX runs jobs inside. We base it on the community AWX EE
+# image (which already has ansible-core + ansible-runner), then add the NetBox
+# collection and the two Python libs the inventory plugin needs.
+#
+# Build it with:
+#   ansible-builder build -t netbox-ee:latest --container-runtime docker -v 3
+
+version: 3
+
+images:
+  base_image:
+    name: registry.fedoraproject.org/fedora:42
+
+dependencies:
+  python_interpreter:
+    package_system: python3
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
+  system:
+    - openssh-clients
+    - sshpass
+  galaxy:
+    collections:
+      - name: netbox.netbox
+  python:
+    - pynetbox
+    - pytz
